@@ -114,6 +114,10 @@ window.addEventListener("DOMContentLoaded", () => {
   counterOnSite();
   modalShow();
   showCards();
+<<<<<<< HEAD
+=======
+  formSender();
+>>>>>>> df99a6df2f22afdbe0ec10decc30a9cfbac8f0a0
 
   function tabsOnSite() {
     const tabContent = document.querySelectorAll('.tabcontent'),
@@ -212,15 +216,16 @@ window.addEventListener("DOMContentLoaded", () => {
 
   function modalShow() {
     const modal = document.querySelector('.modal'),
-          btns = document.querySelectorAll('[data-modal]'),
-          modalClose = document.querySelector('[data-close]');
+          btns = document.querySelectorAll('[data-modal]');
     btns.forEach(btn => {
       btn.addEventListener('click', e => {
         superShow();
       });
     });
-    modalClose.addEventListener('click', e => {
-      superClose();
+    modal.addEventListener('click', e => {
+      if (e.target === modal || e.target.getAttribute('data-close') == '') {
+        superClose();
+      }
     });
 
     function superClose(elem = modal) {
@@ -229,11 +234,12 @@ window.addEventListener("DOMContentLoaded", () => {
       document.body.style.overflow = '';
     }
 
+    const delayModal = setTimeout(superShow, 50000);
+
     function superShow(elem = modal) {
       elem.classList.add('show');
       elem.classList.remove('hide');
       document.body.style.overflow = 'hidden';
-      clearInterval(delayModal);
     }
 
     modal.addEventListener('click', e => {
@@ -245,7 +251,11 @@ window.addEventListener("DOMContentLoaded", () => {
       if (e.code === 'Escape' && modal.classList.contains('show')) {
         superClose();
       }
+<<<<<<< HEAD
     }); // const delayModal = setTimeout(superShow, 5000);
+=======
+    });
+>>>>>>> df99a6df2f22afdbe0ec10decc30a9cfbac8f0a0
 
     function showModalByScroll() {
       if (window.pageYOffset + document.documentElement.clientHeight >= document.documentElement.scrollHeight - 1) {
@@ -307,6 +317,53 @@ window.addEventListener("DOMContentLoaded", () => {
     const tabsTwo = new CardsForSite("img/tabs/elite.jpg", "elite", 'Меню "Премиум"', 'В меню “Премиум” мы используем не только красивый дизайн упаковки, но и качественное исполнение блюд. Красная рыба, морепродукты, фрукты - ресторанное меню без похода в ресторан!', 20, 'menu__item').render(CardsParentDiv);
     const tabsThree = new CardsForSite("img/tabs/post.jpg", "post", 'Меню "Постное"', 'Меню “Постное” - это тщательный подбор ингредиентов: полное отсутствие продуктов животного происхождения, молоко из миндаля, овса, кокоса или гречки, правильное количество белков за счет тофу и импортных вегетарианских стейков. ', 16, 'menu__item').render(CardsParentDiv);
   }
+<<<<<<< HEAD
+=======
+
+  function formSender() {
+    const forms = document.querySelectorAll('form');
+    const message = {
+      loading: 'Loading...',
+      success: 'Thank you we will to call you!',
+      failure: 'Sorry, something wrong'
+    };
+    forms.forEach(item => {
+      postData(item);
+    });
+
+    function postData(form) {
+      form.addEventListener('submit', e => {
+        e.preventDefault();
+        const statusMessage = document.createElement('div');
+        statusMessage.classList.add('status');
+        statusMessage.textContent = message.loading;
+        form.append(statusMessage);
+        const request = new XMLHttpRequest();
+        request.open('POST', 'server.php');
+        request.setRequestHeader('Content-type', 'appliction/json');
+        const formData = new FormData(form);
+        const object = {};
+        formData.forEach((value, key) => {
+          object[key] = value;
+        });
+        const json = JSON.stringify(object);
+        request.send(json);
+        request.addEventListener('load', () => {
+          if (request.status === 200) {
+            console.log(request.response);
+            statusMessage.textContent = message.success;
+            form.reset();
+            setTimeout(() => {
+              statusMessage.remove();
+            }, 3000);
+          } else {
+            statusMessage.textContent = message.failure;
+          }
+        });
+      });
+    }
+  }
+>>>>>>> df99a6df2f22afdbe0ec10decc30a9cfbac8f0a0
 });
 
 /***/ })
